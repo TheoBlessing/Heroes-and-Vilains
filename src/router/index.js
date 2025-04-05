@@ -1,14 +1,46 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import ListeOrganisation from "@/views/ListeOrganisation.vue";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    component:()=> import("../App.vue"),
+    children: [
+      {
+        path:'organisation',
+        component:ListeOrganisation
+      },
+      {
+        path: '',
+        component: HomeView
+      },
+      {
+        path:'auth',
+        component:()=>import('../views/SecretView.vue')
+      },
+      {
+        path:'detail',
+        component: ()=>import('../views/DetailOrganisationView.vue')
+      },
+      {
+        path: 'teams',
+        component: ()=>import('../views/TeamList.vue')
+      },
+      {
+        path: 'team/',
+        component: () => import('../views/DetailTeam.vue'),
+      },
+      {
+        path: 'team/add-member',
+        component:()=>import('../components/AddMember.vue')
+      }
+
+
+    ]
   },
   {
     path: '/about',
