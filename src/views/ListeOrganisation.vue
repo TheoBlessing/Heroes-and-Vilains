@@ -54,7 +54,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import router from "@/router";
 import store from "@/store";
 
 export default {
@@ -80,7 +79,7 @@ export default {
       this.selectedOrg = row;
       store.commit('setCurrentOrg',this.selectedOrg)
       console.log("Organisation sélectionnée :", row);
-      router.push('detail')
+      this.$router.push('detail').catch(() => {});
     },
 
 
@@ -105,7 +104,7 @@ export default {
             // Sélectionne une organisation et redirige vers la page de détails
             viewOrganization(id) {
               this.selectOrganization(id);
-                this.$router.push('detail');
+              this.$router.push('detail');
             },
 
             // Sélectionne une organisation dans le tableau

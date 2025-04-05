@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import auth from './secret'
+import errors from "./errors";
 import {getHeroesByIdFromAPI, getAliasesFromAPI, postHeroesService, updateHeroesService} from "@/services/hero.service"
 import {
   getAllOrgsService,
@@ -14,7 +16,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    motDePasseOrg:null,
     currentHero:[],
     currentTeam:null,
     currentOrg:null,
@@ -27,9 +28,6 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
-    setMotDePasse(state, passWord) {
-      state.motDePasseOrg = passWord
-    },
     setCurrentHero(state, hero) {
       state.currentHero = hero
     },
@@ -76,10 +74,10 @@ export default new Vuex.Store({
         console.log("Cas anormal dans getHeroes()")
       }
     },
-    async getHeroesById({commit,state}, id) {
+    async getHeroesById({commit}, id) {
       let result = null
       try {
-        result = await getHeroesByIdFromAPI(id,state.motDePasseOrg)
+        result = await getHeroesByIdFromAPI(id)
         if (result.error === 0) {
           commit('addTeamHeroes',result.data)
 
@@ -111,10 +109,10 @@ export default new Vuex.Store({
         console.log(result.data)
       }
     },
-    async updateHeroes({state,commit}, heroData) {
+    async updateHeroes({commit}, heroData) {
       let result = null
       try {
-        result = await updateHeroesService(heroData,state.motDePasseOrg)
+        result = await updateHeroesService(heroData)
         if (result.error === 0) {
           commit('setCurrentHero',result.data)
         }
@@ -181,11 +179,9 @@ export default new Vuex.Store({
     },
     async getOrganisationById({state,commit}) {
       let id = state.currentOrg._id
-      let secret = state.motDePasseOrg
       let result = null
-      console.log("secret : "+secret+id)
       try {
-        result = await getOrgByIdService(id,secret)
+        result = await getOrgByIdService(id)
         if (result.error === 0) {
           commit('setCurrentOrg',result.data[0])
         }
@@ -198,12 +194,11 @@ export default new Vuex.Store({
         console.log("Cas anormal dans getOrganisationById()")
       }
     },
-    async addTeamsToOrg({state,commit},id) {
+    async addTeamsToOrg({commit},id) {
       let result = null
       try {
-        result = await addTeamToOrgService(id,state.motDePasseOrg)
+        result = await addTeamToOrgService(id)
         if (result.error === 0) {
-          console.log(result.data)
           commit('setCurrentTeam',result.data)
         }
         else {
@@ -281,13 +276,11 @@ export default new Vuex.Store({
         console.log("Cas anormal dans addHeroesToTeam()")
       }
     },
-    async removeTeamFromOrg({commit,state},idTeam) {
+    async removeTeamFromOrg({commit},idTeam) {
       let result = null
-      console.log(state.currentTeam)
       try {
-        result = await removeteamFromOrgService(idTeam,state.motDePasseOrg)
+        result = await removeteamFromOrgService(idTeam)
         if (result.error === 0) {
-          console.log(result.data)
           commit('setCurrentOrg',result.data)
         }
         else {
@@ -303,5 +296,7 @@ export default new Vuex.Store({
   },
 
   modules: {
+    auth,
+    errors
   }
 })

@@ -19,7 +19,7 @@ async function postHeroesFromAPI(publicName, realName, powers = []){
     return await postRequest('/heroes/create', heroPayload, 'POSTHEROES');
 }
 
-async function updateHeroesFromAPI(heroData, valeurSecret){
+async function updateHeroesFromAPI(heroData){
     const updatePayload = {
         _id: heroData._id
     };
@@ -44,19 +44,19 @@ async function updateHeroesFromAPI(heroData, valeurSecret){
     }
 
 
-    return putRequest('/heroes/update?org-secret='+valeurSecret,updatePayload,'UPDATEHEROES')
+    return putRequest('/heroes/update',updatePayload,'UPDATEHEROES')
 }
 
-async  function getHeroesByIdFromAPI(_id,valeurSecret){
-    return getRequest('/heroes/getbyid/'+_id+'?org-secret='+valeurSecret, 'GETHEROSBYID')
+async  function getHeroesByIdFromAPI(_id){
+    return getRequest('/heroes/getbyid/'+_id, 'GETHEROSBYID')
 }
 
 async function postHeroesService(publicName,realName,power){
     let answer = await postHeroesFromAPI(publicName,realName,power)
     return answer
 }
-async function updateHeroesService(heroData, valeurSecret){
-    let answer = await updateHeroesFromAPI(heroData, valeurSecret)
+async function updateHeroesService(heroData){
+    let answer = await updateHeroesFromAPI(heroData)
     return answer
 }
 
@@ -65,6 +65,4 @@ export {
     postHeroesService,
     updateHeroesService,
     getHeroesByIdFromAPI
-
-
 }

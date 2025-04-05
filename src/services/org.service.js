@@ -3,12 +3,8 @@ import {getRequest, postRequest,patchRequest} from "@/services/axios.service";
 async function getOrgsFromAPI() {
     return getRequest('/orgs/get', 'GETORGS')
 }
-async function getOrgsByIdFromAPI(id,secret) {
-    return getRequest(`/orgs/getbyid/${id}?org-secret=${secret}`, 'GETORGSBYID',{
-        params:{
-            secret:secret
-        }
-    })
+async function getOrgsByIdFromAPI(id) {
+    return getRequest(`/orgs/getbyid/${id}`, 'GETORGSBYID')
 }
 async function createOrgFromAPI(nom,valeurSecrete){
     console.log(nom,valeurSecrete)
@@ -18,18 +14,18 @@ async function createOrgFromAPI(nom,valeurSecrete){
     }
     return postRequest('/orgs/create',data,'CREATEORG')
 }
-async function addTeamToOrgFromAPI(id,secret){
+async function addTeamToOrgFromAPI(id){
     let data = {
         idTeam:id
     }
-    return patchRequest('/orgs/addteam?org-secret='+secret,data,'ADDTEAM')
+    return patchRequest('/orgs/addteam',data,'ADDTEAM')
 }
-async function removeteamFromAPI(id,secret){
+async function removeteamFromAPI(id){
     let data = {
         idTeam:id
     }
 
-    return patchRequest('/orgs/removeteam?org-secret='+secret,data,'REMOVETEAM')
+    return patchRequest('/orgs/removeteam',data,'REMOVETEAM')
 }
 async function getAllOrgsService() {
     let answer = await getOrgsFromAPI()
@@ -41,18 +37,16 @@ async function createOrgService(nom,valeurSecrete) {
     console.log(answer)
     return answer
 }
-async function getOrgByIdService(id,secret){
-    let answer = await getOrgsByIdFromAPI(id,secret)
+async function getOrgByIdService(id){
+    let answer = await getOrgsByIdFromAPI(id)
     return answer
 }
-async function addTeamToOrgService(id,secret){
-    console.log("id : "+id)
-    let answer = await addTeamToOrgFromAPI(id,secret)
+async function addTeamToOrgService(id){
+    let answer = await addTeamToOrgFromAPI(id)
     return answer
 }
-async function removeteamFromOrgService(id,secret){
-    console.log("id : "+id)
-    let answer = await removeteamFromAPI(id,secret)
+async function removeteamFromOrgService(id){
+    let answer = await removeteamFromAPI(id)
     return answer
 }
 

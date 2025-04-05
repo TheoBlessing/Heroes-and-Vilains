@@ -27,6 +27,7 @@
           <router-view></router-view>
         </v-container>
       </v-main>
+      <error-dialog title="Erreur" width="500"></error-dialog>
     </v-app>
 
 
@@ -36,10 +37,11 @@
 <script>
 
 import router from "@/router";
+import ErrorDialog from "@/components/ErrorDialog.vue";
 
 export default {
   name: 'App',
-
+  components:{ErrorDialog },
   data: () => ({
     drawer: false, // Contrôle l'état du menu tiroir (ouvert/fermé)
     menuItems: [

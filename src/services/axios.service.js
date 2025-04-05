@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store'
 
 // creation d'un agent axios, avec une config. pour atteindre l'API
 const axiosAgent = axios.create({
@@ -21,6 +22,17 @@ axiosAgent.interceptors.request.use(
     error => { return Promise.reject(error) }
 )
 */
+axiosAgent.interceptors.request.use(
+    config => {
+        const orgSecret = store.state.auth.orgSecret
+        if (orgSecret) {
+            config.headers['org-secret'] = orgSecret
+        }
+
+        return config
+    },
+    error => Promise.reject(error)
+);
 
 function handleError(serviceName, err) {
     if (err.response) {

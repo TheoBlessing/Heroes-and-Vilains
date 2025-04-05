@@ -22,6 +22,7 @@
 
 <script>
 import router from "@/router";
+import {mapActions} from "vuex";
 
 export default {
   data() {
@@ -31,9 +32,10 @@ export default {
     }
   },
   methods: {
+    ...mapActions('auth',['setSecret']),
     validate() {
       console.log(this.secretInput);
-      this.$store.commit('setMotDePasse', this.secretInput);
+      this.setSecret(this.secretInput)
       router.push('/');
     },
     cancel() {
